@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKU Automation · Партнёру по продажам</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0B0D; --panel:rgba(255,255,255,.035); --panel-solid:#141417;
+    --red:#DB2022; --ember:#FF5A3C; --bone:#EDEDF0; --ash:#8A8A93;
+    --line:rgba(255,255,255,.09); --line-strong:rgba(255,255,255,.16);
+    --ok:#3ecf8e; --blue:#3d8bff;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--ink); color:var(--bone);
+    font-family:'Inter',system-ui,sans-serif; line-height:1.6;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(60% 40% at 100% 0%, rgba(219,32,34,.14), transparent 60%),
+      radial-gradient(50% 40% at 0% 100%, rgba(255,90,60,.07), transparent 60%);
+  }
+  .wrap{position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 18px 90px}
+
+  header{padding:34px 0 18px}
+  .brandline{display:flex; align-items:center; gap:10px; margin-bottom:22px}
+  .dot{width:11px; height:11px; border-radius:50%; background:var(--red); box-shadow:0 0 16px var(--red)}
+  .brandline b{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--ash); font-weight:500}
+  h1{font-family:'Manrope',sans-serif; font-weight:800; font-size:clamp(26px,7vw,40px); line-height:1.08; letter-spacing:-.02em; margin:0 0 14px}
+  h1 .em{color:var(--red)}
+  .sub{color:var(--ash); font-size:15px; max-width:56ch; margin:0}
+
+  .role{
+    margin:22px 0 8px; padding:16px 18px; border:1px solid var(--line);
+    border-left:3px solid var(--red); border-radius:14px; background:var(--panel);
+    backdrop-filter:blur(8px); font-size:14.5px;
+  }
+  .role b{color:var(--bone)}
+
+  /* niche selector */
+  .niches{display:flex; gap:8px; margin:20px 0 4px}
+  .niche-btn{
+    flex:1; text-align:center; font-family:'Manrope',sans-serif; font-weight:700; font-size:14.5px;
+    color:var(--ash); background:var(--panel-solid); border:1px solid var(--line);
+    padding:13px 10px; border-radius:14px; cursor:pointer; transition:.16s;
+  }
+  .niche-btn:hover{color:var(--bone); border-color:var(--line-strong)}
+  .niche-btn.on{color:#fff; background:var(--red); border-color:var(--red); box-shadow:0 6px 20px rgba(219,32,34,.35)}
+  .niche-btn.soon{opacity:.4; cursor:default}
+  .niche-btn .tag{display:block; font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; margin-top:3px; font-weight:400; opacity:.75}
+
+  .niche-panel{display:none}
+  .niche-panel.on{display:block}
+
+  /* sub tabs */
+  .tabs{
+    position:sticky; top:0; z-index:5; display:flex; gap:6px; overflow-x:auto;
+    padding:12px 0; margin:14px -18px 0; padding-left:18px; padding-right:18px;
+    background:linear-gradient(var(--ink) 78%, rgba(11,11,13,0)); scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{
+    flex:0 0 auto; font-family:'Manrope',sans-serif; font-weight:700; font-size:13.5px;
+    color:var(--ash); background:var(--panel-solid); border:1px solid var(--line);
+    padding:9px 15px; border-radius:999px; cursor:pointer; white-space:nowrap; transition:.16s;
+  }
+  .tab:hover{color:var(--bone); border-color:var(--line-strong)}
+  .tab.on{color:#fff; background:var(--ember); border-color:var(--ember)}
+  .tab:focus-visible{outline:2px solid var(--ember); outline-offset:2px}
+
+  .panel{display:none; padding-top:26px; animation:fade .3s ease}
+  .panel.on{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(6px)}to{opacity:1; transform:none}}
+
+  h2{font-family:'Manrope',sans-serif; font-weight:800; font-size:21px; letter-spacing:-.01em; margin:34px 0 4px}
+  h2:first-child{margin-top:0}
+  .lead{color:var(--ash); font-size:14px; margin:0 0 18px}
+  h3{font-family:'Manrope',sans-serif; font-weight:700; font-size:16px; margin:26px 0 10px; display:flex; align-items:center; gap:9px}
+  .num{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--red); border:1px solid rgba(219,32,34,.4); border-radius:6px; padding:2px 7px; flex:0 0 auto}
+  p{margin:0 0 12px; font-size:15px}
+  strong{color:#fff; font-weight:600}
+  a{color:var(--ember); text-decoration:none; border-bottom:1px solid rgba(255,90,60,.35)}
+  a:hover{border-color:var(--ember)}
+
+  .card{border:1px solid var(--line); border-radius:16px; padding:18px 18px 6px; background:var(--panel); backdrop-filter:blur(8px); margin:14px 0}
+  .card h3{margin-top:4px}
+
+  ul.clean{list-style:none; padding:0; margin:0 0 12px}
+  ul.clean li{position:relative; padding:6px 0 6px 22px; font-size:15px; border-bottom:1px solid var(--line)}
+  ul.clean li:last-child{border-bottom:0}
+  ul.clean li::before{content:""; position:absolute; left:2px; top:15px; width:6px; height:6px; border-radius:50%; background:var(--red)}
+  ul.clean li b{color:#fff}
+  .warn li::before{background:var(--ember)}
+  .muted-tag{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ash); text-transform:uppercase; letter-spacing:.14em}
+
+  .demo{margin:18px 0; padding:18px; border-radius:16px; background:linear-gradient(135deg, rgba(219,32,34,.16), rgba(255,90,60,.05)); border:1px solid rgba(219,32,34,.35)}
+  .demo .muted-tag{color:var(--ember)}
+  .demo .link{display:block; font-family:'JetBrains Mono',monospace; font-size:14px; color:#fff; word-break:break-all; margin:8px 0 4px; border:0}
+  .demo .note{font-size:13px; color:var(--ash); margin:6px 0 0}
+
+  .copy{position:relative; border:1px solid var(--line-strong); border-radius:14px; background:#0e0e11; margin:12px 0; overflow:hidden}
+  .copy .head{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; border-bottom:1px solid var(--line); background:rgba(255,255,255,.02)}
+  .copy .head span{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ash)}
+  .copybtn{font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500; cursor:pointer; color:var(--bone); background:transparent; border:1px solid var(--line-strong); border-radius:8px; padding:5px 11px; transition:.16s; flex:0 0 auto}
+  .copybtn:hover{border-color:var(--red); color:#fff}
+  .copybtn.done{border-color:var(--ok); color:var(--ok)}
+  .copybtn:focus-visible{outline:2px solid var(--ember); outline-offset:2px}
+  .copy .body{padding:14px; font-size:14.5px; white-space:pre-wrap; color:#dcdce2; font-family:'Inter',sans-serif}
+
+  .qa{border-bottom:1px solid var(--line); padding:16px 0}
+  .qa:last-child{border-bottom:0}
+  .qa .q{font-family:'Manrope',sans-serif; font-weight:700; font-size:15px; color:#fff; margin:0 0 4px}
+  .qa .q::before{content:"«"; color:var(--red)} .qa .q::after{content:"»"; color:var(--red)}
+  .qa .ans{font-size:14.5px; margin:0}
+  .qa .ans::before{content:"→ "; color:var(--ember); font-weight:700}
+
+  footer{margin-top:44px; padding-top:20px; border-top:1px solid var(--line); color:var(--ash); font-size:13px}
+  footer b{color:var(--bone)}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="brandline"><span class="dot"></span><b>AKU&nbsp;Automation · для&nbsp;партнёра</b></div>
+    <h1>Твои <span class="em">ниши</span> прямо сейчас</h1>
+    <p class="sub">Две ниши уже готовы к продаже: клиники и логистика. Переключайся между ними вверху — внутри та же структура: матчасть, скрипты, возражения, передача лида.</p>
+
+    <div class="role">
+      <b>Как ты зарабатываешь:</b> 15% с каждой закрытой сделки (для клиник ≈15 000 ₽, для логистики — по факту сделки). Твоя задача — довести клиента до интереса и передать его. Цену, объём работ и созвон закрывает Алексей — так лид закреплён за тобой.
+    </div>
+  </header>
+
+  <div class="niches">
+    <button class="niche-btn on" data-n="clinics">Клиники<span class="tag">готово</span></button>
+    <button class="niche-btn" data-n="logistics">Логистика<span class="tag">готово</span></button>
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- ====================  НИША: КЛИНИКИ  ==================== -->
+  <!-- ======================================================= -->
+  <div class="niche-panel on" id="niche-clinics">
+
+    <nav class="tabs" role="tablist">
+      <button class="tab on" data-p="c-p1">Матчасть</button>
+      <button class="tab" data-p="c-p2">Скрипты</button>
+      <button class="tab" data-p="c-p3">Возражения</button>
+      <button class="tab" data-p="c-p4">Передача лида</button>
+    </nav>
+
+    <section class="panel on" id="c-p1">
+      <h2>Что мы продаём</h2>
+      <p class="lead">Клиники, стоматологии, косметология и SPA — всё, что живёт на повторных визитах и записи.</p>
+
+      <div class="card">
+        <p class="muted-tag">Одним предложением</p>
+        <p>Система, которая <strong>возвращает клинике/салону пациентов и клиентов, которых он молча теряет</strong>: подтверждает записи (меньше неявок), напоминает про повторный визит и будит «спящую» базу — через мессенджер, без нагрузки на администратора.</p>
+      </div>
+
+      <h3><span class="num">01</span> Какую боль закрываем</h3>
+      <ul class="clean">
+        <li><b>Неявки и «забыл».</b> Записался и не пришёл — слот сгорел, специалист простаивает.</li>
+        <li><b>Не вернулись на повтор.</b> Гигиена раз в полгода, курс процедур, контроль — никто не напоминает, клиент уходит.</li>
+        <li><b>Мёртвая база.</b> Сотни, кто был раз и пропал 8–18 месяцев назад — про них просто забыли.</li>
+        <li><b>Вечерние/ночные заявки.</b> Написали в WhatsApp в 23:00 — ответили только утром, а к утру уже записались у конкурента.</li>
+      </ul>
+      <p class="lead">Вернуть «своего» клиента дешевле, чем купить нового через рекламу. Работаем с теми, кто у бизнеса <strong>уже есть</strong>.</p>
+
+      <h3><span class="num">02</span> Что делает система</h3>
+      <div class="card">
+        <p><strong>Приём заявок 24/7.</strong> Вечерние и ночные обращения закрываются в запись сразу, а не ждут утра.</p>
+        <p><strong>Против неявок.</strong> За 2 дня и за 3 часа до визита — подтвердить / перенести / отменить. Освободившийся слот — следующему в очереди.</p>
+        <p><strong>Напоминания на повтор.</strong> Система помнит интервалы (гигиена, курс, контроль) и вовремя зовёт вернуться.</p>
+        <p><strong>Реактивация базы.</strong> Находит тех, кто пропал 8–18 месяцев, и возвращает волнами сообщений.</p>
+        <p><strong>Панель владельца.</strong> Утренняя сводка: записи на сегодня, подтверждения, свободные слоты, сколько вернули клиентов и на какую сумму.</p>
+      </div>
+
+      <h3><span class="num">03</span> Как это работает простыми словами</h3>
+      <ul class="clean">
+        <li>Интерфейс — обычный бот в <b>Telegram / WhatsApp</b>, там, где клиенты и так пишут. Ставить ничего не надо.</li>
+        <li>Данные — <b>их же выгрузка клиентов</b> (Excel: имя, телефон, дата визита). Такое есть у любого бизнеса.</li>
+        <li>Мы <b>не лезем внутрь их CRM/МИС/YCLIENTS</b> — продукт одинаковый для всех, внедрение быстрое, бизнес ничем не рискует. Глубокую интеграцию предлагаем позже, как отдельную опцию.</li>
+        <li>Тексты сообщений подбирает <b>ИИ</b> — звучат по-человечески, не как спам-рассылка.</li>
+      </ul>
+
+      <h3><span class="num">04</span> Границы — чего система НЕ делает</h3>
+      <ul class="clean warn">
+        <li>Не заменяет врача/специалиста и не ставит диагнозы.</li>
+        <li>Не лезет в медкарты — работает с записью и контактом.</li>
+        <li>Не «спамит»: частота и тон под контролем, важные действия — с подтверждения владельца.</li>
+        <li>Не гарантирует конкретную сумму — гарантируем механику; цифры зависят от базы клиента.</li>
+      </ul>
+
+      <h3><span class="num">05</span> Кому продаём</h3>
+      <ul class="clean">
+        <li><b>Стоматологии, медцентры, косметология, SPA-салоны</b> — всё с высоким чеком и повторными визитами.</li>
+        <li>Особенно у кого запись = <b>«оставьте номер, перезвоним»</b> или только по телефону.</li>
+        <li>У кого есть база, но с ней <b>никто не работает</b>.</li>
+        <li>Несколько специалистов/кабинетов — поток и потери ощутимее.</li>
+      </ul>
+
+      <h3><span class="num">06</span> Про данные (152-ФЗ)</h3>
+      <p>Работаем с <strong>контактами для записи</strong> (имя, телефон, дата), а не с диагнозами и медкартами. Сообщения — то же, что бизнес и так шлёт вручную. Детали по договору — на созвоне с Алексеем.</p>
+    </section>
+
+    <section class="panel" id="c-p2">
+      <h2>Скрипты продаж</h2>
+      <p class="lead">Копируй, подставляй название и адаптируй под свою манеру.</p>
+
+      <div class="demo">
+        <p class="muted-tag">Твой главный инструмент — живое демо</p>
+        <a class="link" href="https://aku-automation.io/clinics/demo/" target="_blank" rel="noopener">aku-automation.io/clinics/demo/</a>
+        <p class="note">Интерактивный плеер трёх модулей + панель владельца. Кидай ссылку в первом же сообщении.</p>
+        <a class="link" href="https://aku-automation.io/clinics/" target="_blank" rel="noopener">aku-automation.io/clinics/</a>
+        <p class="note">Страница ниши с ROI-калькулятором — подставь цифры клиента, он сам увидит потери и возврат.</p>
+      </div>
+
+      <h3><span class="num">01</span> Где искать</h3>
+      <ul class="clean">
+        <li><b>2ГИС / Яндекс.Карты:</b> стоматологии, медцентры, салоны красоты и SPA — у кого запись только через «оставьте номер».</li>
+        <li><b>Instagram / Telegram</b> клиник и салонов — пиши в директ или менеджеру.</li>
+        <li>Начни со <b>своего города</b> — «я тоже из ...» повышает доверие.</li>
+      </ul>
+
+      <h3><span class="num">02</span> Первое сообщение — 3 варианта</h3>
+      <div class="copy">
+        <div class="head"><span>Вариант 1 · коротко + демо</span><button class="copybtn">Копировать</button></div>
+        <div class="body">Здравствуйте! Меня зовут Ильяс, я из команды AKU Automation. Посмотрел вас — запись идёт через звонок/заявку, значит часть клиентов теряется вечером и в выходные.
+
+Мы делаем систему, которая сама подтверждает записи, напоминает про повторный визит и возвращает клиентов из базы — всё через мессенджер. Можно потрогать вживую: https://aku-automation.io/clinics/demo/
+
+Показать, как это может работать у вас?</div>
+      </div>
+      <div class="copy">
+        <div class="head"><span>Вариант 2 · через боль неявок</span><button class="copybtn">Копировать</button></div>
+        <div class="body">Добрый день! Подскажите, бывают неявки — человек записался и не пришёл?
+
+Мы закрываем это автоматически: бот напоминает за 2 дня и за 3 часа, а освободившийся слот сразу отдаёт следующему. Плюс возвращаем тех, кто давно не был.
+
+Вот живое демо: https://aku-automation.io/clinics/demo/ — интересно посмотреть на цифрах вашего бизнеса?</div>
+      </div>
+      <div class="copy">
+        <div class="head"><span>Вариант 3 · реактивация базы</span><button class="copybtn">Копировать</button></div>
+        <div class="body">Здравствуйте! У вас наверняка есть клиенты, кто был раз и пропал. Их можно вернуть — это дешевле любой рекламы.
+
+Делаем систему, которая будит базу и напоминает про повторные визиты. Демо: https://aku-automation.io/clinics/demo/
+
+Скинуть короткое предложение?</div>
+      </div>
+
+      <h3><span class="num">03</span> 5 вопросов на квалификацию</h3>
+      <ul class="clean">
+        <li>Как сейчас записываете — телефон, заявка, бот?</li>
+        <li>Бывают неявки? Примерно сколько в неделю?</li>
+        <li>Ведёте базу клиентов? В какой программе, есть выгрузка?</li>
+        <li>Напоминаете сами про повторные визиты?</li>
+        <li>Сколько специалистов/кабинетов? (масштаб)</li>
+      </ul>
+      <p>Дальше — «покажу на созвоне, 15 минут» и <strong>передаёшь Алексею</strong>.</p>
+    </section>
+
+    <section class="panel" id="c-p3">
+      <h2>Работа с возражениями</h2>
+      <div class="card">
+        <div class="qa"><p class="q">Дорого</p><p class="ans">Окупается за счёт возвращённых клиентов — видно на калькуляторе за 1–2 месяца. Давайте посчитаем на ваших цифрах, точную цену подберёт специалист под масштаб.</p></div>
+        <div class="qa"><p class="q">У нас есть администратор</p><p class="ans">Администратор не может помнить про каждого из сотен клиентов и работать вечером/в выходные. Система не заменяет его — снимает рутину.</p></div>
+        <div class="qa"><p class="q">А это безопасно? Данные клиентов</p><p class="ans">Работаем с контактами для записи — имя, телефон, дата, а не с диагнозами. Это те же сообщения, что вы шлёте вручную. Детали по договору — на созвоне.</p></div>
+        <div class="qa"><p class="q">Мы пробовали рассылки, не сработало</p><p class="ans">Обычные рассылки — это спам. Здесь тексты пишет ИИ под конкретный повод, с подтверждением владельца. Покажу разницу на демо.</p></div>
+        <div class="qa"><p class="q">Нам не нужно, у нас всё хорошо</p><p class="ans">Отлично, если поток есть. Вопрос в тех, кто записался и не дошёл, и в тех, кто пропал — это потерянная выручка. Гляньте демо, там видно в деньгах.</p></div>
+        <div class="qa"><p class="q">Пришлите КП / сколько стоит</p><p class="ans">Подготовим предложение под вас. Соберу пару деталей и подключу специалиста — он даст точную цену под масштаб. → передаёшь Алексею.</p></div>
+      </div>
+    </section>
+
+    <section class="panel" id="c-p4">
+      <h2>Передача лида</h2>
+      <h3><span class="num">01</span> Что собрать</h3>
+      <ul class="clean">
+        <li>Название + город + сайт/соцсеть.</li>
+        <li>Контакт: кто и где.</li>
+        <li>Боль, которую проговорил клиент.</li>
+        <li>Что обсудили, реакция на демо.</li>
+      </ul>
+      <div class="copy">
+        <div class="head"><span>Переслать Алексею</span><button class="copybtn">Копировать</button></div>
+        <div class="body">Алексей, тёплый лид 🔥 [Клиники]
+
+Клиника/салон: ___ (город, ссылка)
+Контакт: ___
+Боль: ___
+Обсудили: ___
+Демо показал: да / нет — реакция ___
+
+Готов передать на созвон и цену.</div>
+      </div>
+      <div class="role" style="margin-top:20px">Дальше цену и созвон ведёт <b>Алексей</b>. Твои <b>15%</b> закреплены за этим лидом.</div>
+    </section>
+
+  </div>
+
+  <!-- ======================================================= -->
+  <!-- ===================  НИША: ЛОГИСТИКА  ==================== -->
+  <!-- ======================================================= -->
+  <div class="niche-panel" id="niche-logistics">
+
+    <nav class="tabs" role="tablist">
+      <button class="tab on" data-p="l-p1">Матчасть</button>
+      <button class="tab" data-p="l-p2">Скрипты</button>
+      <button class="tab" data-p="l-p3">Возражения</button>
+      <button class="tab" data-p="l-p4">Передача лида</button>
+    </nav>
+
+    <section class="panel on" id="l-p1">
+      <h2>Что мы продаём</h2>
+      <p class="lead">Транспортные компании со <strong>своим автопарком</strong> (не экспедиторы-посредники) — те, кто сам считает и возит.</p>
+
+      <div class="card">
+        <p class="muted-tag">Одним предложением</p>
+        <p>Система, которая <strong>принимает заявки на просчёт ставки в одно окно</strong> (почта, сайт, мессенджеры) и готовит <strong>черновик расчёта</strong> по тарифам компании за минуты — вместо того, чтобы менеджер вручную считал часами, пока клиент уходит к тому, кто ответил первым.</p>
+      </div>
+
+      <h3><span class="num">01</span> Какую боль закрываем</h3>
+      <ul class="clean">
+        <li><b>Заявки приходят вразнобой.</b> Почта, сайт, WhatsApp — менеджер собирает их руками, что-то теряется.</li>
+        <li><b>Расчёт занимает часы.</b> Пока считают ставку по маршруту/весу/габариту — клиент уже получил ответ у конкурента.</li>
+        <li><b>Заявку выигрывает не лучшая ставка, а первая.</b> Скорость ответа решает больше, чем цена.</li>
+      </ul>
+
+      <h3><span class="num">02</span> Что делает система</h3>
+      <div class="card">
+        <p><strong>Приём заявок в одно окно.</strong> Все обращения с почты, сайта и мессенджеров собираются в одном месте — ничего не теряется.</p>
+        <p><strong>Умное извлечение данных.</strong> ИИ вытаскивает из заявки маршрут, вес, габариты, тип груза — без ручного разбора текста.</p>
+        <p><strong>Черновик расчёта.</strong> Система готовит предварительный расчёт по тарифам компании — менеджер проверяет и отправляет за минуты вместо часов.</p>
+        <p><strong>Апселлы (по запросу клиента):</strong> разбор ВЭД-документов (инвойсы, упаковочные листы, CMR, ТТН, ГТД — сверка расхождений) и мониторинг тендеров на ЕИС/площадках по ОКПД со сводкой в Telegram.</p>
+      </div>
+
+      <h3><span class="num">03</span> Как это работает простыми словами</h3>
+      <ul class="clean">
+        <li>Заявки собираются туда, где компания и так их получает — <b>почта, сайт, WhatsApp/Telegram</b>.</li>
+        <li>Данные для расчёта — <b>тарифы самой компании</b>, которые она предоставляет при внедрении.</li>
+        <li>Финальное решение и отправку расчёта клиенту всегда делает <b>менеджер</b> — система готовит черновик, а не отправляет ставку сама.</li>
+      </ul>
+
+      <h3><span class="num">04</span> Границы — чего система НЕ делает</h3>
+      <ul class="clean warn">
+        <li>Не отправляет ставку клиенту без проверки менеджера.</li>
+        <li>Не заменяет логиста — снимает рутину расчёта и сбора данных.</li>
+        <li>Не гарантирует конкретную сумму экономии — гарантируем скорость ответа; цифры зависят от объёма заявок компании.</li>
+      </ul>
+
+      <h3><span class="num">05</span> Кому продаём</h3>
+      <ul class="clean">
+        <li><b>Транспортные компании со своим автопарком</b> — ж/д, авто, мультимодальные перевозки.</li>
+        <li>У кого <b>много входящих заявок</b> на просчёт ставки в день.</li>
+        <li>Кто работает с <b>ВЭД</b> (импорт/экспорт, документы) или участвует в <b>тендерах</b> — для них апселлы особенно ценны.</li>
+      </ul>
+    </section>
+
+    <section class="panel" id="l-p2">
+      <h2>Скрипты продаж</h2>
+      <p class="lead">Ниша логистики новее клиникской — кейсов пока нет, продаём через демо и логику.</p>
+
+      <div class="demo">
+        <p class="muted-tag">Материал для показа</p>
+        <a class="link" href="https://aku-automation.io/logistics/" target="_blank" rel="noopener">aku-automation.io/logistics/</a>
+        <p class="note">Страница ниши на сайте. Интерактивного демо-плеера, как у клиник, здесь пока нет — если нужно показать вживую на созвоне, пиши Алексею заранее.</p>
+      </div>
+
+      <h3><span class="num">01</span> Где искать</h3>
+      <ul class="clean">
+        <li><b>2ГИС / Яндекс.Карты / Авито:</b> транспортные компании со своим автопарком в городе.</li>
+        <li><b>Threads / VK / Telegram-группы логистики</b> — компании сами публикуют посты о поиске клиентов и партнёров, там видно боли вживую.</li>
+        <li>Ищи тех, кто явно <b>много общается с клиентами по заявкам</b> (сайт с формой расчёта, активные соцсети).</li>
+      </ul>
+
+      <h3><span class="num">02</span> Первое сообщение</h3>
+      <div class="copy">
+        <div class="head"><span>Вариант · через скорость ответа</span><button class="copybtn">Копировать</button></div>
+        <div class="body">Здравствуйте! Меня зовут Ильяс, я из команды AKU Automation. Смотрю, у вас много заявок на просчёт ставки приходит с разных каналов — почта, сайт, мессенджеры.
+
+Мы делаем систему, которая собирает такие заявки в одно окно и готовит черновик расчёта по вашим тарифам за минуты — менеджеру остаётся проверить и отправить. На практике заявку часто выигрывает не лучшая ставка, а та, что пришла первой.
+
+Расскажу подробнее — 10 минут на созвон?</div>
+      </div>
+
+      <h3><span class="num">03</span> Вопросы на квалификацию</h3>
+      <ul class="clean">
+        <li>Сколько заявок на просчёт приходит в день?</li>
+        <li>По каким каналам обычно пишут клиенты?</li>
+        <li>Сколько времени сейчас уходит на расчёт одной заявки?</li>
+        <li>Работаете с ВЭД-документами или тендерами?</li>
+      </ul>
+      <p>Дальше — «покажу на созвоне» и <strong>передаёшь Алексею</strong>.</p>
+    </section>
+
+    <section class="panel" id="l-p3">
+      <h2>Работа с возражениями</h2>
+      <div class="card">
+        <div class="qa"><p class="q">У нас и так справляются менеджеры</p><p class="ans">Вопрос не в том, справляются ли — а сколько заявок уходит к тем, кто ответил быстрее. Система не заменяет менеджера, а ускоряет расчёт в разы.</p></div>
+        <div class="qa"><p class="q">А как считает точность расчёта?</p><p class="ans">Расчёт строится на ваших же тарифах — это черновик, менеджер всегда проверяет перед отправкой клиенту. Точность зависит от тарифной сетки, которую вы даёте.</p></div>
+        <div class="qa"><p class="q">Сколько это стоит?</p><p class="ans">Зависит от объёма заявок и того, что именно подключаем — обсудим со специалистом на созвоне, он подберёт под вашу компанию. → передаёшь Алексею.</p></div>
+        <div class="qa"><p class="q">У вас есть кейсы в логистике?</p><p class="ans">Ниша для нас новая, честно — сейчас как раз ведём первых клиентов. Могу показать демо и логику работы, а первые реальные цифры пришлём, как только появятся.</p></div>
+      </div>
+    </section>
+
+    <section class="panel" id="l-p4">
+      <h2>Передача лида</h2>
+      <h3><span class="num">01</span> Что собрать</h3>
+      <ul class="clean">
+        <li>Название компании + город + сайт/контакт.</li>
+        <li>Сколько заявок в день, по каким каналам.</li>
+        <li>Работают ли с ВЭД / тендерами.</li>
+        <li>Что обсудили, готовы ли на созвон.</li>
+      </ul>
+      <div class="copy">
+        <div class="head"><span>Переслать Алексею</span><button class="copybtn">Копировать</button></div>
+        <div class="body">Алексей, тёплый лид 🔥 [Логистика]
+
+Компания: ___ (город, сайт)
+Контакт: ___
+Заявок в день: ___ каналы: ___
+ВЭД/тендеры: ___
+Обсудили: ___
+
+Готов передать на созвон и цену.</div>
+      </div>
+      <div class="role" style="margin-top:20px">Дальше цену и созвон ведёт <b>Алексей</b>. Твои <b>15%</b> закреплены за этим лидом.</div>
+    </section>
+
+  </div>
+
+  <footer>
+    <b>AKU Automation</b> — команда, которая делает эту систему. Материал для внутреннего использования партнёром по продажам. Обновляется по мере появления новых ниш. По любым вопросам и по цене — пиши Алексею.
+    <p style="margin:12px 0 0"><a href="shpargalka.html">→ Открыть шпаргалку на время звонка</a></p>
+  </footer>
+
+</div>
+
+<script>
+  // niche switch
+  const niches = document.querySelectorAll('.niche-btn');
+  const nichePanels = document.querySelectorAll('.niche-panel');
+  niches.forEach(b=>b.addEventListener('click',()=>{
+    if(b.classList.contains('soon')) return;
+    niches.forEach(x=>x.classList.remove('on'));
+    nichePanels.forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.getElementById('niche-'+b.dataset.n).classList.add('on');
+    window.scrollTo({top:0});
+  }));
+
+  // sub tabs (scoped per niche panel)
+  document.querySelectorAll('.niche-panel').forEach(scope=>{
+    const tabs = scope.querySelectorAll('.tab');
+    const panels = scope.querySelectorAll('.panel');
+    tabs.forEach(t=>t.addEventListener('click',()=>{
+      tabs.forEach(x=>x.classList.remove('on'));
+      panels.forEach(x=>x.classList.remove('on'));
+      t.classList.add('on');
+      scope.querySelector('#'+t.dataset.p).classList.add('on');
+      window.scrollTo({top:0});
+    }));
+  });
+
+  // copy buttons
+  document.querySelectorAll('.copy').forEach(block=>{
+    const btn = block.querySelector('.copybtn');
+    const body = block.querySelector('.body');
+    btn.addEventListener('click', async ()=>{
+      try{ await navigator.clipboard.writeText(body.innerText.trim()); }
+      catch(e){
+        const r=document.createRange(); r.selectNode(body);
+        const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+        try{document.execCommand('copy')}catch(_){} s.removeAllRanges();
+      }
+      const old=btn.textContent;
+      btn.textContent='Скопировано'; btn.classList.add('done');
+      setTimeout(()=>{btn.textContent=old; btn.classList.remove('done')},1600);
+    });
+  });
+</script>
+</body>
+</html>
