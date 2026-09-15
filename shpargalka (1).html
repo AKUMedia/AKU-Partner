@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шпаргалка перед звонком · AKU Automation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0B0B0D;--red:#DB2022;--ember:#FF5A3C;--bone:#EDEDF0;--ash:#8A8A93;--line:rgba(255,255,255,.1)}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:var(--bone);font-family:'Inter',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:720px;margin:0 auto;padding:26px 18px 60px}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+  .brand{display:flex;align-items:center;gap:9px}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 14px var(--red)}
+  .brand b{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+  .print{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--bone);background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer}
+  .print:hover{border-color:var(--red)}
+  h1{font-family:'Manrope',sans-serif;font-weight:800;font-size:24px;letter-spacing:-.02em;margin:0 0 4px}
+  h1 .em{color:var(--red)}
+  .tagline{color:var(--ash);font-size:13px;margin:0 0 16px}
+
+  .niches{display:flex;gap:8px;margin:0 0 20px}
+  .niche-btn{flex:1;text-align:center;font-family:'Manrope',sans-serif;font-weight:700;font-size:14px;color:var(--ash);background:#141417;border:1px solid var(--line);padding:11px 8px;border-radius:12px;cursor:pointer}
+  .niche-btn.on{color:#fff;background:var(--red);border-color:var(--red)}
+  .niche-panel{display:none}
+  .niche-panel.on{display:block}
+
+  .box{border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin:12px 0;background:rgba(255,255,255,.03)}
+  .box.red{border-left:3px solid var(--red)}
+  .lbl{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);margin:0 0 8px}
+  .box p{margin:0;font-size:14.5px}
+  strong{color:#fff;font-weight:600}
+
+  .mods{display:grid;grid-template-columns:1fr;gap:8px;margin:6px 0 0}
+  .mod{display:flex;gap:10px;align-items:baseline;font-size:14px;padding:7px 0;border-bottom:1px solid var(--line)}
+  .mod:last-child{border-bottom:0}
+  .mod .k{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--red);flex:0 0 22px}
+  .mod b{color:#fff}
+
+  .price{background:linear-gradient(135deg,rgba(219,32,34,.18),rgba(255,90,60,.05));border:1px solid rgba(219,32,34,.4)}
+  .price .lbl{color:var(--ember)}
+
+  .obj{padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+  .obj:last-child{border-bottom:0}
+  .obj .o{color:#fff;font-weight:600}
+  .obj .o::before{content:"«"}.obj .o::after{content:"» — "}
+  .obj .a{color:#cfcfd4}
+
+  .demo{word-break:break-all;font-family:'JetBrains Mono',monospace;font-size:13px;color:#fff}
+  ol{margin:6px 0 0;padding-left:20px;font-size:14px}
+  ol li{margin:3px 0}
+
+  @media print{
+    body{background:#fff;color:#111}
+    .print{display:none}
+    .niches{display:none}
+    .niche-panel{display:block !important}
+    .box{background:#fafafa;border-color:#ddd;break-inside:avoid}
+    .lbl{color:#c1181a}.mod .k{color:#c1181a}
+    .price{background:#fff;border-color:#c1181a}
+    h1 .em{color:#c1181a}.dot{box-shadow:none}
+    .obj .a,.box p{color:#222}.obj .o,strong,.mod b{color:#000}
+    .brand b,.tagline{color:#555}
+    a,.demo{color:#000}
+    .obj,.mod{border-color:#ddd}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><span class="dot"></span><b>AKU&nbsp;Automation</b></div>
+    <button class="print" onclick="window.print()">Сохранить в PDF</button>
+  </div>
+
+  <h1>Шпаргалка <span class="em">перед звонком</span></h1>
+  <p class="tagline">Держи открытой во время разговора. Переключи нишу.</p>
+
+  <div class="niches">
+    <button class="niche-btn on" data-n="clinics">Клиники</button>
+    <button class="niche-btn" data-n="logistics">Логистика</button>
+  </div>
+
+  <!-- КЛИНИКИ -->
+  <div class="niche-panel on" id="np-clinics">
+    <div class="box red">
+      <p class="lbl">Питч за 10 секунд</p>
+      <p>Возвращаем клиентов, которых бизнес теряет: <strong>подтверждаем записи</strong> (меньше неявок), <strong>напоминаем про повтор</strong> и <strong>будим спящую базу</strong> — через мессенджер, без нагрузки на администратора.</p>
+    </div>
+    <div class="box">
+      <p class="lbl">Модули</p>
+      <div class="mods">
+        <div class="mod"><span class="k">A</span><span><b>24/7 приём заявок:</b> вечерние/ночные обращения не ждут утра.</span></div>
+        <div class="mod"><span class="k">B</span><span><b>Против неявок:</b> напоминаем за 2 дня и 3 часа, слот — следующему.</span></div>
+        <div class="mod"><span class="k">C</span><span><b>Повтор и реактивация:</b> зовём на плановый визит и будим тех, кто пропал 8–18 мес.</span></div>
+        <div class="mod"><span class="k">+</span><span><b>Панель владельца:</b> утренняя сводка — записи, подтверждения, сколько вернули.</span></div>
+      </div>
+    </div>
+    <div class="box price">
+      <p class="lbl">⚠ Правило цены</p>
+      <p>Цену <strong>не называешь</strong>. На вопрос цены → «подключу специалиста» → <strong>пишешь Алексею</strong>. Доказательство — <strong>демо + калькулятор</strong>, не выдуманные кейсы.</p>
+    </div>
+    <div class="box">
+      <p class="lbl">Демо / материалы</p>
+      <p class="demo">aku-automation.io/clinics/demo/<br>aku-automation.io/clinics/</p>
+    </div>
+    <div class="box">
+      <p class="lbl">Топ-возражений</p>
+      <div class="obj"><span class="o">Дорого</span><span class="a">окупается за 1–2 мес, посчитаем на калькуляторе.</span></div>
+      <div class="obj"><span class="o">Есть администратор</span><span class="a">он не помнит сотни клиентов и не работает ночью.</span></div>
+      <div class="obj"><span class="o">Данные безопасно?</span><span class="a">только имя/телефон/дата, не диагнозы; детали на созвоне.</span></div>
+      <div class="obj"><span class="o">Пробовали рассылки</span><span class="a">то был спам; тут ИИ пишет под повод, покажу на демо.</span></div>
+    </div>
+    <div class="box red">
+      <p class="lbl">Клиент потеплел → передать</p>
+      <ol>
+        <li>Как записываете — телефон / заявка / бот?</li>
+        <li>Неявки бывают? Сколько в неделю?</li>
+        <li>База есть, ведёте? Есть выгрузка?</li>
+        <li>Сколько специалистов/кабинетов?</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ЛОГИСТИКА -->
+  <div class="niche-panel" id="np-logistics">
+    <div class="box red">
+      <p class="lbl">Питч за 10 секунд</p>
+      <p>Собираем заявки на просчёт ставки в <strong>одно окно</strong> и готовим <strong>черновик расчёта</strong> по тарифам компании за минуты — менеджер проверяет и отправляет, вместо часов ручного счёта.</p>
+    </div>
+    <div class="box">
+      <p class="lbl">Модули</p>
+      <div class="mods">
+        <div class="mod"><span class="k">A</span><span><b>Приём в одно окно:</b> почта + сайт + мессенджеры, ничего не теряется.</span></div>
+        <div class="mod"><span class="k">B</span><span><b>Извлечение данных:</b> ИИ вытаскивает маршрут/вес/габарит/тип груза.</span></div>
+        <div class="mod"><span class="k">C</span><span><b>Черновик расчёта:</b> по тарифам компании, менеджер проверяет и отправляет.</span></div>
+        <div class="mod"><span class="k">+</span><span><b>Апселлы:</b> разбор ВЭД-документов, мониторинг тендеров ЕИС.</span></div>
+      </div>
+    </div>
+    <div class="box price">
+      <p class="lbl">⚠ Правило цены</p>
+      <p>Цену <strong>не называешь</strong>. Ниша новая — кейсов пока нет, честно об этом говори, продавай через логику и демо-страницу. Горячий лид → <strong>Алексею</strong>.</p>
+    </div>
+    <div class="box">
+      <p class="lbl">Материал для показа</p>
+      <p class="demo">aku-automation.io/logistics/</p>
+    </div>
+    <div class="box">
+      <p class="lbl">Топ-возражений</p>
+      <div class="obj"><span class="o">Менеджеры справляются</span><span class="a">вопрос не в этом, а сколько заявок уходит к тем, кто ответил быстрее.</span></div>
+      <div class="obj"><span class="o">Точность расчёта?</span><span class="a">черновик по вашим тарифам, менеджер всегда проверяет перед отправкой.</span></div>
+      <div class="obj"><span class="o">Есть кейсы?</span><span class="a">ниша новая, ведём первых клиентов — покажу демо и логику работы.</span></div>
+    </div>
+    <div class="box red">
+      <p class="lbl">Клиент потеплел → передать</p>
+      <ol>
+        <li>Сколько заявок на просчёт в день?</li>
+        <li>По каким каналам пишут?</li>
+        <li>Сколько времени уходит на расчёт одной заявки?</li>
+        <li>Работают с ВЭД / тендерами?</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<script>
+  const niches = document.querySelectorAll('.niche-btn');
+  const panels = document.querySelectorAll('.niche-panel');
+  niches.forEach(b=>b.addEventListener('click',()=>{
+    niches.forEach(x=>x.classList.remove('on'));
+    panels.forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');
+    document.getElementById('np-'+b.dataset.n).classList.add('on');
+  }));
+</script>
+</body>
+</html>
